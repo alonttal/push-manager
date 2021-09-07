@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Subscription = require('../../src/models/subscription')
+const VapidKey = require('../../src/models/vapidKey')
 
 const subscriptionOne = {
   endpoint: 'subscriptionOne',
@@ -9,12 +10,20 @@ const subscriptionOne = {
   }
 }
 
+const vapidKeyOne = {
+  publicKey: 'randomPublicKey',
+  privateKey: 'randomPrivateKey'
+}
+
 const setupDatabase = async () => {
   await Subscription.deleteMany()
+  await VapidKey.deleteMany()
   await Subscription.create(subscriptionOne)
+  await VapidKey.create(vapidKeyOne)
 }
 
 module.exports = {
   setupDatabase,
-  subscriptionOne
+  subscriptionOne,
+  vapidKeyOne
 }
