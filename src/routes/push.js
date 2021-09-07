@@ -1,6 +1,7 @@
 const express = require('express')
 const webpush = require('web-push')
 const Subscription = require('../models/subscription')
+const VapidKey = require('../models/vapidKey')
 
 const pushRouter = new express.Router()
 
@@ -27,6 +28,29 @@ pushRouter.delete('/subscription', async (req, res) => {
       throw new Error('Missing endpoint')
     }
     await Subscription.deleteOne({ endpoint })
+    res.sendStatus(200)
+  } catch (e) {
+    res.sendStatus(400)
+  }
+})
+
+pushRouter.post('/vapidkey', async (req, res) => {
+  try {
+    const vapidKeyInfo = await VapidKey.create()
+    res.status(201).send(vapidKeyInfo)
+  } catch (e) {
+    res.sendStatus(500)
+  }
+})
+
+pushRouter.delete('/vapidkey', async (req, res) => {
+  const publicKey = req.body.publicKey;
+
+  try {
+    if (!publicKey) {
+      throw new Error('Missing publicKey')
+    }
+    await VapidKey.deleteOne({ publicKey })
     res.sendStatus(200)
   } catch (e) {
     res.sendStatus(400)
