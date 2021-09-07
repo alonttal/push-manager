@@ -32,3 +32,5 @@ pushRouter.delete('/subscription', async (req, res) => {
     res.sendStatus(400)
   }
 })
+
+module.exports = pushRouter
