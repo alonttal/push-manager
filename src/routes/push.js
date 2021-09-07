@@ -17,3 +17,18 @@ pushRouter.post('/subscription', async (req, res) => {
     res.sendStatus(400)
   }
 })
+
+pushRouter.delete('/subscription', async (req, res) => {
+  const subscription = req.body.subscription;
+  const endpoint = subscription ? subscription.endpoint : req.body.endpoint
+  
+  try {
+    if (!endpoint) {
+      throw new Error('Missing endpoint')
+    }
+    await Subscription.deleteOne({ endpoint })
+    res.sendStatus(200)
+  } catch (e) {
+    res.sendStatus(400)
+  }
+})
