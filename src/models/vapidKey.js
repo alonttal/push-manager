@@ -17,8 +17,11 @@ const vapidKeySchema = new mongoose.Schema({
   timestamps: true
 })
 
-vapidKeySchema.statics.create = async () => {
-  const vapidKey = new VapidKey(webpush.generateVAPIDKeys())
+vapidKeySchema.statics.create = async (data) => {
+  if (!data) {
+    data = webpush.generateVAPIDKeys()
+  }
+  const vapidKey = new VapidKey(data)
   await vapidKey.save()
   return { vapidKey }
 }
