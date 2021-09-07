@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+	"start": "node src/index.js",
+    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Alon Talmor",
@@ -11,5 +13,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^6.0.5"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0"
   }
 }

@@ -1,4 +1,4 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://127.0.0.1:27017/push-manager')
+mongoose.connect(proccess.env.MONGODB_URL)
 .catch(e => console.log(e))
