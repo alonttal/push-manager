@@ -2,6 +2,7 @@ const express = require('express')
 const webpush = require('web-push')
 const Subscription = require('../models/subscription')
 const VapidKey = require('../models/vapidKey')
+const pushService = require('../services/pushService')
 
 const pushRouter = new express.Router()
 
@@ -44,7 +45,7 @@ pushRouter.post('/vapidkey', async (req, res) => {
 })
 
 pushRouter.delete('/vapidkey', async (req, res) => {
-  const publicKey = req.body.publicKey;
+  const publicKey = req.body.publicKey
 
   try {
     if (!publicKey) {
@@ -54,6 +55,19 @@ pushRouter.delete('/vapidkey', async (req, res) => {
     res.sendStatus(200)
   } catch (e) {
     res.sendStatus(400)
+  }
+})
+
+pushRouter.post('/push', async (req, res) => {
+  try {
+    await pushService.push(req.body)
+    res.sendStatus(200)
+  } catch (e) {
+    const statusCode = e.statusCode || 400
+    if (statusCode === 410) { // The subscriber has unsbscribed to the service
+      await Subscription.deleteOne({ endpoint: req.body.endpoint })
+    }
+    res.sendStatus(statusCode)
   }
 })
 
