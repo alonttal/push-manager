@@ -33,12 +33,3 @@ self.addEventListener('notificationclick', function(event) {
     clients.openWindow('https://developers.google.com/web/')
   );
 });
-
-function isJson(str) {
-  try {
-      JSON.parse(str);
-  } catch (e) {
-      return false;
-  }
-  return true;
-}
