@@ -1,6 +1,7 @@
 const express = require('express')
 const webpush = require('web-push')
 const Subscription = require('../models/subscription')
+const Notification = require('../models/notification')
 const VapidKey = require('../models/vapidKey')
 const pushService = require('../services/pushService')
 
@@ -30,6 +31,20 @@ pushRouter.delete('/subscription', async (req, res) => {
     }
     await Subscription.deleteOne({ endpoint })
     res.sendStatus(200)
+  } catch (e) {
+    res.sendStatus(400)
+  }
+})
+
+pushRouter.post('/notification', async (req, res) => {
+  const notification = req.body.notification;
+
+  try {
+    if (!notification) {
+      throw new Error('Missing notification info')
+    }
+    const notificationInfo = await Notification.create(notification)
+    res.status(201).send(notificationInfo)
   } catch (e) {
     res.sendStatus(400)
   }
