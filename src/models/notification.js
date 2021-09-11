@@ -16,12 +16,11 @@ const notificationSchema = new mongoose.Schema({
     trim: true,
     validate: {
       validator: function(v) {
-        console.log(v)
         return validator.isURL(v, {protocols: ['https'], require_protocol: true})
       }
     }
   },
-  badget: {
+  badge: {
     type: String,
     trim: true,
     validate: {
