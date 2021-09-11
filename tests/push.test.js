@@ -1,6 +1,7 @@
 const request = require('supertest')
 const app = require('../src/app')
 const Subscription = require('../src/models/subscription')
+const Notification = require('../src/models/notification')
 const VapidKey = require('../src/models/vapidKey')
 const { setupDatabase, subscriptionOne, vapidKeyOne } = require('./fixtures/db.js')
 
@@ -35,6 +36,24 @@ test('Should delete subscription', async () => {
 
   const savedSubscription = await Subscription.findOne({ endpoint: subscriptionOne.endpoint })
   expect(savedSubscription).toBeNull()
+})
+
+test('Should create notification', async () => {
+  const notification = {
+    title: 'title is a must',
+    body: 'some body is optional',
+    icon: 'https://mustbehttpsiconurl.com',
+    badge: 'https://mustbehttpsbadgeurl.com'
+  }
+
+  const response = await request(app)
+  .post('/notification')
+  .send({ notification })
+  .expect(201)
+  expect(response.body).toMatchObject({ notification });
+
+  const savedNotification = await Notification.findById(response.body.notification._id)
+  expect(savedNotification).not.toBeNull()
 })
 
 test('Should create vapid key', async () => {
