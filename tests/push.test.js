@@ -3,7 +3,7 @@ const app = require('../src/app')
 const Subscription = require('../src/models/subscription')
 const Notification = require('../src/models/notification')
 const VapidKey = require('../src/models/vapidKey')
-const { setupDatabase, subscriptionOne, vapidKeyOne } = require('./fixtures/db.js')
+const { setupDatabase, subscriptionOne } = require('./fixtures/db.js')
 
 beforeEach(setupDatabase)
 
@@ -56,25 +56,3 @@ test('Should create notification', async () => {
   expect(savedNotification).not.toBeNull()
 })
 
-test('Should create vapid key', async () => {
-  const response = await request(app)
-  .post('/vapidkey')
-  .send()
-  .expect(201)
-  expect(response.body.vapidKey).toBeTruthy()
-
-  const savedVapidKey = await VapidKey.findOne({ publicKey: response.body.vapidKey.publicKey })
-  expect(savedVapidKey).not.toBeNull()
-})
-
-test('Should delete vapid key', async () => {
-  await request(app)
-  .delete('/vapidkey')
-  .send({
-    publicKey: vapidKeyOne.publicKey
-  })
-  .expect(200)
-
-  const savedVapidKey = await VapidKey.findOne({ publicKey: vapidKeyOne.publicKey })
-  expect(savedVapidKey).toBeNull()
-})
