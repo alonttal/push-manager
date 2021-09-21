@@ -43,7 +43,18 @@ const push = async (data) => {
     }
   }
 
-  const payload = JSON.stringify(notification)
+  const payloadObj = { notification }
+  
+  if (data.date) {
+    try {
+      dateObj = new Date(data.date)
+      payloadObj.time = dateObj
+    } catch (e) {
+      throw new Error('Bad date format')
+    }
+  }
+
+  payload = JSON.stringify(payloadObj)
 
   const response = await webpush.sendNotification(
     subscription,
