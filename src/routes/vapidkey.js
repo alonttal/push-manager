@@ -29,7 +29,7 @@ router.delete('/vapidkey', async (req, res) => {
   try {
     const publicKey = req.body.publicKey
     if (!publicKey) {
-      throw error.MissingParameterError('publicKey')
+      throw HttpError.ofMissingParameter('publicKey')
     }
     await VapidKey.deleteOne({ publicKey })
     res.sendStatus(200)
