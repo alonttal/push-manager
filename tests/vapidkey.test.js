@@ -51,3 +51,19 @@ test('Should delete vapid key', async () => {
   const savedVapidKey = await VapidKey.findOne({ publicKey: vapidKeyOne.publicKey })
   expect(savedVapidKey).toBeNull()
 })
+
+test('Should fail to delete vapid key if public key not specified', async () => {
+  await request(app)
+  .delete('/vapidkey')
+  .send()
+  .expect(400)
+})
+
+test('Should return status `OK` when trying to delete unexisting vapid key', async () => {
+  await request(app)
+  .delete('/vapidkey')
+  .send({
+    publicKey: 'unexistingPublicKey'
+  })
+  .expect(200)
+})
