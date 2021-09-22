@@ -1,41 +1,9 @@
 const express = require('express')
 const HttpError = require('./HttpError')
-const Subscription = require('../models/subscription')
 const Notification = require('../models/notification')
 const pushService = require('../services/pushService')
 
 const pushRouter = new express.Router()
-
-pushRouter.post('/subscription', async (req, res) => {
-  const subscription = req.body.subscription
-
-  try {
-    if (!subscription) {
-      throw HttpError.ofMissingParameter('subscription')
-    }
-    const subscriptionInfo = await Subscription.create(subscription)
-    res.status(201).send(subscriptionInfo)
-  } catch (e) {
-    const error = HttpError.of(e)
-    res.status(error.status).send(error.message)
-  }
-})
-
-pushRouter.delete('/subscription', async (req, res) => {
-  const subscription = req.body.subscription
-  const endpoint = subscription ? subscription.endpoint : req.body.endpoint
-  
-  try {
-    if (!endpoint) {
-      throw HttpError.ofMissingParameter('endpoint')
-    }
-    await Subscription.deleteOne({ endpoint })
-    res.sendStatus(200)
-  } catch (e) {
-    const error = HttpError.of(e)
-    res.status(error.status).send(error.message)
-  }
-})
 
 pushRouter.post('/notification', async (req, res) => {
   const notification = req.body.notification
