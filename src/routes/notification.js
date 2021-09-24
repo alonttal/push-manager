@@ -43,7 +43,7 @@ router.patch('/notification/:id', async (req, res) => {
     if (!notification) {
       throw HttpError.ofEntityNotFoundError(`notification '${notificationId}'`)
     }
-    
+
     const data = req.body
     if (data) {
       await notification.update(data)
