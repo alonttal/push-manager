@@ -1,24 +1,8 @@
 const express = require('express')
 const HttpError = require('./HttpError')
-const Notification = require('../models/notification')
 const pushService = require('../services/pushService')
 
 const pushRouter = new express.Router()
-
-pushRouter.post('/notification', async (req, res) => {
-  const notification = req.body.notification
-
-  try {
-    if (!notification) {
-      throw HttpError.ofMissingParameter('notification')
-    }
-    const notificationInfo = await Notification.create(notification)
-    res.status(201).send(notificationInfo)
-  } catch (e) {
-    const error = HttpError.of(e)
-    res.status(error.status).send(error.message)
-  }
-})
 
 pushRouter.post('/push', async (req, res) => {
   try {

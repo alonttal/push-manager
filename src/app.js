@@ -3,6 +3,7 @@ const express = require('express')
 require('./db/mongoose')
 const vapidKeyRouter = require('./routes/vapidkey')
 const subscriptionRouter = require('./routes/subscription')
+const notificationRouter = require('./routes/notification')
 const pushRouter = require('./routes/push')
 
 const app = express()
@@ -12,6 +13,7 @@ app.use(express.static(publicDirectoryPath))
 app.use(express.json())
 app.use(vapidKeyRouter)
 app.use(subscriptionRouter)
+app.use(notificationRouter)
 app.use(pushRouter)
 
 module.exports = app
