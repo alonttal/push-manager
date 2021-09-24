@@ -24,11 +24,21 @@ class HttpError extends Error {
   static ofMissingParameter(paramName) {
     return new MissingParameterError(paramName)
   }
+
+  static ofEntityNotFoundError(entityName) {
+    return new EntityNotFoundError(entityName)
+  }
 }
 
 class MissingParameterError extends HttpError {
   constructor(paramName) {
     super(400, `Missing '${paramName}' parameter`)
+  }
+}
+
+class MissingPropertyError extends HttpError {
+  constructor(propName) {
+    super(400, `Missing '${propName}' property`)
   }
 }
 
@@ -38,9 +48,9 @@ class DuplicateEntityError extends HttpError {
   }
 }
 
-class MissingPropertyError extends HttpError {
-  constructor(propName) {
-    super(400, `Missing '${propName}' property`)
+class EntityNotFoundError extends HttpError {
+  constructor(entityName) {
+    super(400, `${entityName} not found`)
   }
 }
 
